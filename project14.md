@@ -108,6 +108,7 @@ Second Step - Running  Ansible Playbook From Jenkins
 ![dev file](./images/dev-file.jpg)
 
 2. Update the content of deploy/jenkinsfile to export environment variables, export ansible.cfg file, specify neccessary stages in the file, and generate and add private key to Jenkins via UI.
+
 ![add privatekey](./images/add-private-key.jpg)
 ![update jenkinsfile](./images/update-jenkinsfile1.jpg)
 ![update jenkinsfile](./images/update-jenkinsfile2.jpg)
@@ -136,15 +137,18 @@ Second Step - Running  Ansible Playbook From Jenkins
 ![scan features branch repo](./images/run-features-branch12.jpg)
 
 5. Update Jenkinsfile to introduce parameterization. Reference inventory as a parameter (So that Jenkins can run ansible against any selected environment in the inventory file).
+
 ![inventory parameter](./images/inventory-parameter1.jpg)
 
 6. In the Ansible execution section, remove the hardcoded inventory/dev and replace with `inventory/${inventory}`. Now, playbooks can run against the specified inventory environment.
+
 ![inventory parameter](./images/inventory-parameter2.jpg)
 ![scan features branch repo](./images/build-with-param.jpg)
 ![scan features branch repo](./images/build-with-param2.jpg)
 ![scan features branch repo](./images/build-with-param3.jpg)
 
 7. Merge features branch to main branch in Github.
+
 ![merge features to main branch](./images/merge-features-main.jpg)
 
 Forth Step: CI/CD Pipeline for TODO Application
@@ -175,6 +179,7 @@ Forth Step: CI/CD Pipeline for TODO Application
 ![artifactory Role on Jenkins](./images/add-artifactory-2-ci.jpg)
 
 - Update site.yml file with necessary ansible configuration for artifactory and update static assignment directory.
+
 ![update site.yml](./images/update-site-yml-artifactory.jpg)
 ![update static assignment](./images/static-assignment-artifactory.jpg)
 
@@ -198,6 +203,7 @@ Forth Step: CI/CD Pipeline for TODO Application
 Fift Step: Integrate Artifactory and Install Sounarcube.
 
 1. Update the mysql roles to create database homestead, user - homestead and grant permissions.to create the database on the db instance. The user must be at the private ip address of the jenkins server.
+
 ![create database on db instance](./images/mysqlrole-2-create-db-and-user.jpg)
 ![confirm db and user creation](./images/db-and-user-creation1.jpg)
 ![confirm db and user creation](./images/db-and-user-creation1.jpg)
@@ -216,11 +222,13 @@ Fift Step: Integrate Artifactory and Install Sounarcube.
 ![updated repo at github ](./images/upate-repo-git.jpg)
 
 4. Create a new pipeline in blueocean for the php-todo app and then build now.
+
 ![new pipeline](./images/new-pipeline-todo.jpg)
 ![scan repo](./images/successful-phptodo.jpg)
 ![scan repo](./images/successful-phptodo2.jpg)
 
 5. Update the Jenkinsfile to include Unit tests step. Then push to github and build on Jenkins console.
+
 ![update Jenkinsfile with unit tests step](./images/unit-test-step.jpg)
 ![Build in Jenkins](./images/unit-test-step1.jpg)
 ![Build in Jenkins](./images/unit-test-step2.jpg)
@@ -242,6 +250,7 @@ Sixth Step: Code Quality Analysis
 ![plot report shows](./images/plotreport.jpg)
 
 3. Package the artifact and deploy to the artifactory server. First, install zip. Add stages to Jenkinsfile and commit changes to github. Then build now. Upload artifactory successfully.
+
 ![install zip](./images/install-zip.jpg)
 ![zip and package artifact stage](./images/artifact-stage.jpg)
 ![upload artifactory](./images/upload-to-artifactory1.jpg)
@@ -250,6 +259,7 @@ Sixth Step: Code Quality Analysis
 ![upload artifactory](./images/upload-to-artifactory4.jpg)
 
 4. Deploy the application to the dev environment by launching Ansible pipeline. Add Deploy stage to Jenkinsfile and uncomment only todo config in site.yml file. Lauch a Todo Server and add private Ip to the dev environment, update static-assignments/deployment.yml with artifactory path with password then commit changes to Github.
+
 ![Launch Todo server](./images/todo-server.jpg)
 ![add Todo ip address](./images/add-ip-todo.jpg)
 ![update static-assignments/deployment.yml](./images/artifaactory-details.jpg)
@@ -257,6 +267,7 @@ Sixth Step: Code Quality Analysis
 ![uncomment todo in playbooks](./images/uncomment-todo.jpg)
 
 5. Execute build now on the todo app in Jenkins console. This begins and later calls ansible-project to run its playbook before ending.
+
 ![Deploy to dev environment](./images/deploy-todo1.jpg)
 ![Deploy to dev environment](./images/deploy-todo2.jpg)
 ![Deploy to dev environment](./images/deploy-todo3.jpg)
@@ -288,23 +299,28 @@ Seventh Step: Introduce quality gate by using Sonarqube.
 Eight Step: Acess and Integrate Sonarqube into the Jenkins Pipeline.
 
 1. Access sonarqube via url:9000 with login details admin.
+
 ![access sonarqube url](./images/access-sonarqube1.jpg)
 
 2. Install the sonar scanner plugin In Jenkins.
+
 ![install sonarqube plugin](./images/access-sonarqube2.jpg)
 ![install sonarqube plugin](./images/access-sonarqube3.jpg)
 
-3. Configure the plugin in Jenkins console. Navigate to configure system in Jenkins. Add SonarQube server url and generate authentication token from Sonarqube console (Admin>my account>security)
+3. Configure the plugin in Jenkins console. Navigate to configure system in Jenkins. Add SonarQube server url and generate authentication token from Sonarqube console (Admin>my account>security).
+
 ![Run the playbooks](./images/sonar-settings.jpg)
 ![Run the playbooks](./images/gen-token.jpg)
 
 4. Configure Quality Gate Jenkins Webhook in SonarQube – The URL should point to the Jenkins server http://{JENKINS_HOST}/sonarqube-webhook/ (Administration > Configuration > Webhooks > Create). Then Setup SonarQube scanner from Jenkins – Global Tool Configuration.
+
 ![configure webhook](./images/web-hook.jpg)
 ![configure webhook](./images/web-hook2.jpg)
 ![setup sonarqube scanner](./images/setup-sonar.jpg)
 
 
 5. Update Jenkins Pipeline in Todo directory to include SonarQube scanning and Quality Gate, commit changes then scan Todo repo. 
+
 ![update Jekins pipeline](./images/include-sonarqube-in-todo.jpg)
 ![sonar pipeline failed](./images/sonar-failed.jpg)
 
@@ -320,6 +336,7 @@ Eight Step: Acess and Integrate Sonarqube into the Jenkins Pipeline.
 ![sonarQube gate deployed](./images/sonar-gate-deployed.jpg)
 
 - Update the SonarQube Quality Gate stage in the Php/Jenkinsfile to ensure that the quality gate does not deploy applications to the production environment if there are bugs or issues with the code then commit to update changes. Ensure npm is installed and xdebug.mode=develop,debug,coverage on the jenkins server. Build aborted since the code did not pass quality check.
+
 ![update Jenkins file](./images/update-Jenkinsfile-todo1.jpg)
 ![install npm](./images/install-npm.jpg)
 ![Build again](./images/quality-no1.jpg)
